@@ -4,8 +4,8 @@
 // @version      0.9
 // @description  Extracts and filters links with specified domains and copies them to clipboard as a string
 // @author       You
-// @match        http://*/*
-// @match        https://*/*
+// @match        http://www.channelmyanmar.to/*
+// @match        https://www.channelmyanmar.to/*
 // @grant        GM_setClipboard
 // ==/UserScript==
 
