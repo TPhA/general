@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Extract and Filter Links
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      1.0
 // @description  Extracts and filters links with specified domains and copies them to clipboard as a string
 // @author       You
 // @match        http://www.channelmyanmar.to/*
