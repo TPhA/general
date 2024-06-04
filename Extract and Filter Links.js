@@ -37,7 +37,7 @@
     }
 
     // Function to update the filtered links list and display in the interface
-    function updateFilteredLinks(keyword, selectedCategories) {
+    function updateFilteredLinks(keyword, selectedCategories, include720p, include1080p) {
         filteredLinks = [];
 
         selectedCategories.forEach(category => {
@@ -47,6 +47,17 @@
                     const simplifiedKeyword = keyword.replace(/[^\w\s]/gi, ''); // Remove special characters
                     const linkWithoutSpecialChars = link.replace(/[^\w\s]/gi, ''); // Remove special characters
                     return linkWithoutSpecialChars.toLowerCase().includes(simplifiedKeyword.toLowerCase());
+                })
+                .filter(link => {
+                    if (include720p && include1080p) {
+                        return link.toLowerCase().includes("720p") || link.toLowerCase().includes("720-p") || link.toLowerCase().includes("720.p") || link.toLowerCase().includes("720_p") || link.toLowerCase().includes("720 p") ||
+                               link.toLowerCase().includes("1080p") || link.toLowerCase().includes("1080-p") || link.toLowerCase().includes("1080.p") || link.toLowerCase().includes("1080_p") || link.toLowerCase().includes("1080 p");
+                    } else if (include720p) {
+                        return link.toLowerCase().includes("720p") || link.toLowerCase().includes("720-p") || link.toLowerCase().includes("720.p") || link.toLowerCase().includes("720_p") || link.toLowerCase().includes("720 p");
+                    } else if (include1080p) {
+                        return link.toLowerCase().includes("1080p") || link.toLowerCase().includes("1080-p") || link.toLowerCase().includes("1080.p") || link.toLowerCase().includes("1080_p") || link.toLowerCase().includes("1080 p");
+                    }
+                    return true;
                 })
                 .filter((link, index, self) => self.indexOf(link) === index) // Remove duplicates
                 .sort(); // Sort alphabetically
@@ -70,6 +81,7 @@
             ul.appendChild(li);
         }
     }
+
 
     // Function to create the interface
     function createInterface() {
@@ -112,6 +124,28 @@
         megaupLabel.style.marginRight = '10px';
         categoryPanel.appendChild(megaupCheckbox);
         categoryPanel.appendChild(megaupLabel);
+
+        // Create 720p checkbox
+        const p720Checkbox = document.createElement('input');
+        p720Checkbox.type = 'checkbox';
+        p720Checkbox.id = 'p720Checkbox';
+        const p720Label = document.createElement('label');
+        p720Label.textContent = '720p';
+        p720Label.htmlFor = 'p720Checkbox';
+        p720Label.style.marginRight = '10px';
+        categoryPanel.appendChild(p720Checkbox);
+        categoryPanel.appendChild(p720Label);
+
+        // Create 1080p checkbox
+        const p1080Checkbox = document.createElement('input');
+        p1080Checkbox.type = 'checkbox';
+        p1080Checkbox.id = 'p1080Checkbox';
+        const p1080Label = document.createElement('label');
+        p1080Label.textContent = '1080p';
+        p1080Label.htmlFor = 'p1080Checkbox';
+        p1080Label.style.marginRight = '10px';
+        categoryPanel.appendChild(p1080Checkbox);
+        categoryPanel.appendChild(p1080Label);
 
         // Append category panel to the container
         container.appendChild(categoryPanel);
@@ -168,20 +202,32 @@
         // Event listener for YoteshinPortal checkbox change
         yoteshinCheckbox.addEventListener('change', function() {
             const selectedCategories = getSelectedCategories();
-            updateFilteredLinks(filterInput.value.trim(), selectedCategories);
+            updateFilteredLinks(filterInput.value.trim(), selectedCategories, p720Checkbox.checked);
         });
 
         // Event listener for MegaUp checkbox change
         megaupCheckbox.addEventListener('change', function() {
             const selectedCategories = getSelectedCategories();
-            updateFilteredLinks(filterInput.value.trim(), selectedCategories);
+            updateFilteredLinks(filterInput.value.trim(), selectedCategories, p720Checkbox.checked);
+        });
+
+        // Event listener for 720p checkbox change
+        p720Checkbox.addEventListener('change', function() {
+            const selectedCategories = getSelectedCategories();
+            updateFilteredLinks(filterInput.value.trim(), selectedCategories, p720Checkbox.checked);
+        });
+
+        // Event listener for 1080p checkbox change
+        p1080Checkbox.addEventListener('change', function() {
+            const selectedCategories = getSelectedCategories();
+            updateFilteredLinks(filterInput.value.trim(), selectedCategories, p720Checkbox.checked, p1080Checkbox.checked);
         });
 
         // Event listener for filter input keyup
         filterInput.addEventListener('keyup', function() {
             const keyword = filterInput.value.trim();
             const selectedCategories = getSelectedCategories();
-            updateFilteredLinks(keyword, selectedCategories);
+            updateFilteredLinks(keyword, selectedCategories, p720Checkbox.checked);
         });
 
         // Event listener for copy button click
