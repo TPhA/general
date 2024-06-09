@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Extract and Filter Links
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  Extracts and filters links with specified domains and copies them to clipboard as a string
 // @author       You
 // @match        http://www.channelmyanmar.to/*
@@ -18,6 +18,10 @@
     let container; // Variable to store the container div for easy access
     let isDragging = false;
     let offsetX, offsetY;
+
+    if (window.location.pathname == '/') {
+        return;
+    }
 
     // Function to extract links
     function extractLinks() {
